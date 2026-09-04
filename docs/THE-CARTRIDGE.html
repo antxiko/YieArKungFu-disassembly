@@ -116,8 +116,8 @@ rest   the byte is a tile</code></pre>
 <p>The second, 0x7375, indexes a table of tables by the opponent and dispatches whichever comes out.</p>
 <p>Without declaring all fifteen the static trace falls well short: the six of the per-opponent dispatch alone hide <b>315 bytes of code</b>.</p>
 <h2 id="the-two-builds">The two builds</h2>
-<p>Two dumps of this cartridge circulate:</p>
-<pre><code>easy  644c78c7d20bb30802888b513b384cf0ce4f9d8b6fd490f30e6211ac92274848
-hard  61c86ad465a81ded7ff66bbd8c6ab61d8dd48e668c639982fe698a4ef46d59b6</code></pre>
-<p>Byte for byte they differ in 15,618 of 16,384, 95.3%. By instruction they share 97.0%. What actually changes is in <a href="FINDINGS.html">Findings</a>.</p>
+<p><b>There are two different Yie Ar Kung-Fu cartridges</b>, and they do not play the same. This is what is in each:</p>
+<table><tr><th></th><th>easy</th><th>hard</th></tr><tr><td>sha256</td><td><code>644c78c7…</code></td><td><code>61c86ad4…</code></td></tr><tr><td>how often the opponent reacts</td><td>always <b>1 frame in 32</b></td><td><b>1 in 32, 16 or 8</b>, by level</td></tr><tr><td>CHEN&#x27;s long weapon</td><td>lasts 18 frames, grows to 8</td><td>lasts 22, grows to 10</td></tr><tr><td>the three height thresholds</td><td>three inline <code>cp</code>s</td><td>a three-byte table, one value changed</td></tr><tr><td>Konami&#x27;s hidden mark</td><td><b>does not carry it</b></td><td><b>carries it</b>: RC-725 and the title in katakana</td></tr><tr><td>this repository</td><td><b>this is the one disassembled</b></td><td>collated instruction by instruction</td></tr></table>
+<p>At the highest level the hard cartridge&#x27;s opponent reacts <b>four times as often</b> as the easy one&#x27;s, and on the easy cartridge that never happens at any level. Everything else is five constants and one change of form.</p>
+<p>Byte for byte the two differ in 15,618 of 16,384, 95.3%. That figure means nothing — both are relocated. By instruction they share <b>97.0%</b>. The detail of every difference is in <a href="FINDINGS.html">Findings</a>, and <code>tools/coteja_builds.py</code> produces it.</p>
 <footer><p><em>Yie Ar Kung-Fu</em> was published by Konami for the MSX; its catalogue number is RC-725 and it is 16 KB. All rights in the game remain with their holders. This is preservation, study and documentation work, and the cartridge image is not distributed.</p></footer></div>

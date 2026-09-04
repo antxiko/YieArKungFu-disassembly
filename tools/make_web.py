@@ -18,6 +18,15 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from estilo_web import ESTILO                                   # noqa: E402
 
+# La tabla que compara las dos compilaciones, que no estaba en el estilo comun
+ESTILO_DOS = (
+    "table.dos{width:100%;border-collapse:collapse;margin:1.2em 0}"
+    "table.dos th,table.dos td{border:1px solid rgba(255,255,255,.18);"
+    "padding:.45em .7em;text-align:left;font-size:.95em;vertical-align:top}"
+    "table.dos th{color:var(--oro)}"
+    "table.dos td:first-child{opacity:.75}"
+)
+
 # Las cifras salen de contar sobre el listado generado, no de escribirlas a
 # ojo: 16384 = 7494 + 8890, que es lo que imprime tools/presupuesto.py (make
 # sanity). RUTINAS son las etiquetas con nombre propio, las que cuenta el
@@ -44,13 +53,16 @@ TXT = {
               "VRAM del emulador: <b>cero diferencias en las tablas de color y "
               "de patron</b>, 12.288 bytes. El listado y las cifras se "
               "reproducen con <code>make</code>.",
+        h_builds='LAS DOS COMPILACIONES',
+        builds='<p>De Yie Ar Kung-Fu hay <b>dos cartuchos distintos</b> circulando, y no es un rumor: aqui estan los dos, y <code>tools/coteja_builds.py</code> los compara instruccion a instruccion. Son <b>el mismo programa</b> -comparten el 97,0 % de las instrucciones- pero no se juegan igual.</p><table class="dos"><tr><th></th><th>FACIL</th><th>DIFICIL</th></tr><tr><td>sha256</td><td><code>644c78c7...</code></td><td><code>61c86ad4...</code></td></tr><tr><td>cada cuanto reacciona el oponente</td><td>siempre <b>1 cuadro de cada 32</b></td><td><b>1 de cada 32, 16 u 8</b> segun el nivel</td></tr><tr><td>el arma larga de CHEN</td><td>dura 18 cuadros y crece hasta 8</td><td>dura 22 y crece hasta 10</td></tr><tr><td>la marca oculta de Konami</td><td>NO la lleva</td><td><b>SI</b>: RC-725 y el titulo en katakana</td></tr><tr><td>el listado de este repositorio</td><td><b>este</b></td><td>solo cotejada</td></tr></table><p>O sea: en el cartucho dificil, al nivel mas alto el oponente reacciona <b>cuatro veces mas a menudo</b> que en el facil, y eso en el facil no pasa nunca. Lo demas son cinco constantes del arma de CHEN y un cambio de forma en tres umbrales de altura.</p>',
         claim="El fondo del templo escrito como TILES por un guion, el "
               "oponente dibujado con tiles y el jugador con sprites, y las dos "
               "compilaciones del cartucho cotejadas instruccion a instruccion.",
         ficha=["Konami - <b>(c) Konami 1985</b>",
                "Cartucho <b>RC-725</b>, 16 KB",
                "MSX1 - <b>pagina 1</b>", "Volcado <b>644c78c7...</b>"],
-        nav=[("#numbers", "Las cifras"), ("#findings", "Hallazgos"),
+        nav=[("#builds", "Las dos versiones"),
+             ("#numbers", "Las cifras"), ("#findings", "Hallazgos"),
              ("#screens", "Lo que dibuja")],
         docnav=[("EMPEZAR.html", "Empezar"), ("EL-JUEGO.html", "El juego"),
                 ("EL-CARTUCHO.html", "El cartucho"),
@@ -81,13 +93,16 @@ TXT = {
               "VRAM: <b>zero differences across the colour and pattern "
               "tables</b>, 12,288 bytes. The listing and the numbers are "
               "reproducible with <code>make</code>.",
+        h_builds='THE TWO BUILDS',
+        builds='<p>There are <b>two different Yie Ar Kung-Fu cartridges</b> in circulation, and this is not hearsay: both are here, and <code>tools/coteja_builds.py</code> collates them instruction by instruction. They are <b>the same program</b> -they share 97.0 % of the instructions- but they do not play the same.</p><table class="dos"><tr><th></th><th>EASY</th><th>HARD</th></tr><tr><td>sha256</td><td><code>644c78c7...</code></td><td><code>61c86ad4...</code></td></tr><tr><td>how often the opponent reacts</td><td>always <b>1 frame in 32</b></td><td><b>1 in 32, 16 or 8</b> depending on the level</td></tr><tr><td>CHEN&rsquo;s long weapon</td><td>lasts 18 frames, grows to 8</td><td>lasts 22, grows to 10</td></tr><tr><td>Konami&rsquo;s hidden mark</td><td>does NOT carry it</td><td><b>YES</b>: RC-725 and the title in katakana</td></tr><tr><td>the listing in this repository</td><td><b>this one</b></td><td>collated only</td></tr></table><p>So: on the hard cartridge, at the highest level the opponent reacts <b>four times as often</b> as on the easy one, and on the easy one that never happens. The rest is five constants of CHEN&rsquo;s weapon and a change of shape in three height thresholds.</p>',
         claim="The temple backdrop written as TILES by a script, the opponent "
               "drawn with tiles and the player with sprites, and the "
               "cartridge's two builds collated instruction by instruction.",
         ficha=["Konami - <b>(c) Konami 1985</b>",
                "An <b>RC-725</b> 16 KB cartridge",
                "MSX1 - <b>page 1</b>", "Dump <b>644c78c7...</b>"],
-        nav=[("#numbers", "The numbers"), ("#findings", "What turned up"),
+        nav=[("#builds", "The two builds"),
+             ("#numbers", "The numbers"), ("#findings", "What turned up"),
              ("#screens", "What it draws")],
         docnav=[("GETTING-STARTED.html", "Getting started"),
                 ("THE-GAME.html", "The game"),
@@ -365,6 +380,20 @@ HALLAZGOS = {
 }
 
 GALERIA = [
+    ("protagonista{}.png",
+     "<b>El protagonista, montado.</b> No es un sprite: son <b>SEIS</b>, y sus "
+     "seis numeros de patron -04 08 0C 10 14 18, los de 0x50A6- no cambian "
+     "nunca. Lo que cambia en cada pose es DONDE va cada uno y QUE dibujo "
+     "tiene dentro, y las dos cosas las dice la receta de 0x50AC. Los "
+     "desplazamientos y los colores de aqui estan comprobados contra la tabla "
+     "de atributos de sprites de una maquina en marcha: <b>doce volcados, "
+     "doce poses reconocidas</b>",
+     "<b>The player, assembled.</b> He is not one sprite: he is <b>SIX</b>, "
+     "and his six pattern numbers -04 08 0C 10 14 18, the ones at 0x50A6- "
+     "never change. What changes in each pose is WHERE each goes and WHAT it "
+     "holds, and the recipe at 0x50AC says both. The offsets and colours here "
+     "are checked against the sprite attribute table of a running machine: "
+     "<b>twelve dumps, twelve poses recognised</b>"),
     ("titulo.png",
      "<b>La pantalla del titulo</b>, montada con los pasos del propio "
      "cartucho: el color plano de los dieciseis primeros tiles (0x560f), el "
@@ -388,46 +417,39 @@ GALERIA = [
      "el cartel, el gong, las ventanas y el ladrillo- lo escribe como tiles "
      "el guion de 0x5da4 en la tabla de NOMBRES; los patrones y los colores "
      "vienen de 0x605b y 0x6207. Comparada con la VRAM del emulador a los 120 "
-     "segundos de partida: <b>cero diferencias</b> en color y en patron. Las "
-     "cifras del marcador y los luchadores no estan porque no los pone el "
-     "montaje, los pinta el juego cuadro a cuadro",
+     "segundos de partida: <b>cero diferencias</b> en color y en patron",
      "<b>The fighting screen</b>. The temple -the columns, the lanterns, the "
      "sign, the gong, the windows and the brickwork- is written as tiles by "
      "the script at 0x5da4 into the NAME table; the patterns and colours come "
      "from 0x605b and 0x6207. Compared against the emulator's VRAM 120 "
-     "seconds into a game: <b>zero differences</b> in colour and pattern. The "
-     "scoreboard figures and the fighters are missing because the build does "
-     "not place them, the game paints them frame by frame"),
+     "seconds into a game: <b>zero differences</b> in colour and pattern"),
     ("oponente_wang.png",
-     "Los <b>57 tiles de WANG</b>, el primer oponente, con su color, tal como "
-     "los deja su guion en la VRAM 0x2880. Puestos de cuatro en cuatro se "
-     "leen las poses: la primera, entera, ocupa cuatro tiles de ancho por "
-     "cinco de alto",
-     "<b>WANG's 57 tiles</b>, the first opponent, with their colour, as his "
+     "<b>WANG</b>, el primer oponente: 57 tiles con su color, tal como los "
+     "deja su guion en la VRAM 0x2880. Puestos de cuatro en cuatro se leen "
+     "las poses: la primera, entera, ocupa cuatro tiles de ancho por cinco de "
+     "alto. Los oponentes NO son sprites como el protagonista: son tiles",
+     "<b>WANG</b>, the first opponent: 57 tiles with their colour, as his "
      "script leaves them at VRAM 0x2880. Laid four to a row the poses read "
-     "out: the first, whole, is four tiles wide by five tall"),
+     "out: the first, whole, is four tiles wide by five tall. The opponents "
+     "are NOT sprites like the player: they are tiles"),
+    ("oponente_tao.png",
+     "<b>TAO</b>, el segundo, el que lanza bolas de fuego",
+     "<b>TAO</b>, the second, the one who throws fireballs"),
     ("oponente_chen.png",
-     "Los <b>68 de CHEN</b>, el tercero. Los dibujos son distintos y el color "
-     "tambien: cada oponente trae su propio guion de patron y su propio guion "
-     "de color, y esa es toda la diferencia entre uno y otro en pantalla",
-     "<b>CHEN's 68</b>, the third. The artwork differs and so does the "
-     "colour: each opponent brings his own pattern script and his own colour "
-     "script, and that is the whole of the difference between one and another "
-     "on screen"),
+     "<b>CHEN</b>, el tercero, el de la cadena: 68 tiles, el que mas gasta. "
+     "Y el unico al que la version dificil le cambia constantes -cinco- "
+     "todas de su arma larga",
+     "<b>CHEN</b>, the third, the one with the chain: 68 tiles, the biggest "
+     "spender. And the only one whose constants the hard build changes -five "
+     "of them- all belonging to his long weapon"),
     ("oponente_lang.png",
-     "Los <b>52 de LANG</b>, el cuarto, que es el que menos gasta de los "
-     "cinco",
-     "<b>LANG's 52</b>, the fourth, the one that spends the least of the "
-     "five"),
-    ("figuras.png",
-     "Las <b>64 figuras de 16x16</b> que quedan en la tabla de patrones de "
-     "sprite despues del bucle de 0x4ca2 y de su espejo. Con R6 = 0x03 esa "
-     "tabla vive en 0x1800, y R1 = 0xE2 dice que los sprites son de 16x16: el "
-     "VDP arma cada uno con cuatro bloques de ocho bytes",
-     "The <b>64 16x16 figures</b> left in the sprite pattern table after the "
-     "loop at 0x4ca2 and its mirror. With R6 = 0x03 that table lives at "
-     "0x1800, and R1 = 0xE2 says the sprites are 16x16: the VDP builds each "
-     "one from four eight-byte blocks"),
+     "<b>LANG</b>, el cuarto, que es el que menos gasta de los cinco: 52 "
+     "tiles",
+     "<b>LANG</b>, the fourth, the one that spends the least of the five: 52 "
+     "tiles"),
+    ("oponente_wu.png",
+     "<b>WU</b>, el quinto y ultimo",
+     "<b>WU</b>, the fifth and last"),
 ]
 
 
@@ -463,6 +485,10 @@ def main(argv):
     imgs = ""
     faltan = []
     for fich, es, en in GALERIA:
+        # un "{}" en el nombre se sustituye por el idioma: asi la lamina del
+        # protagonista sale rotulada en el idioma de la pagina
+        if "{}" in fich:
+            fich = fich.format("" if idioma == "es" else "_" + idioma)
         ruta = os.path.join(imgdir, fich)
         if not os.path.exists(ruta):
             faltan.append(fich)
@@ -476,7 +502,7 @@ def main(argv):
     html = f"""<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{t['titulo']}</title>
-<style>{ESTILO}</style>
+<style>{ESTILO}{ESTILO_DOS}</style>
 <header class="top">
   {cabecera}
   <p class="claim">{t['claim']}</p>
@@ -485,6 +511,7 @@ def main(argv):
 <p class="ficha" style="border:1px solid var(--oro);padding:.8em 1em;margin:1.5em 0">
 {t['aviso']}</p>
 <nav>{nav}</nav>
+<section id="builds"><h2>{t['h_builds']}</h2>{t['builds']}</section>
 <section id="numbers">
   <h2>{t['h_num']}</h2>
   <div class="cifras">{cifras}</div>

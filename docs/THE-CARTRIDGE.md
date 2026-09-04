@@ -91,10 +91,24 @@ per-opponent dispatch alone hide **315 bytes of code**.
 
 ## The two builds
 
-Two dumps of this cartridge circulate:
+**There are two different Yie Ar Kung-Fu cartridges**, and they do not play the
+same. This is what is in each:
 
-    easy  644c78c7d20bb30802888b513b384cf0ce4f9d8b6fd490f30e6211ac92274848
-    hard  61c86ad465a81ded7ff66bbd8c6ab61d8dd48e668c639982fe698a4ef46d59b6
+|  | easy | hard |
+|---|---|---|
+| sha256 | `644c78c7…` | `61c86ad4…` |
+| how often the opponent reacts | always **1 frame in 32** | **1 in 32, 16 or 8**, by level |
+| CHEN's long weapon | lasts 18 frames, grows to 8 | lasts 22, grows to 10 |
+| the three height thresholds | three inline `cp`s | a three-byte table, one value changed |
+| Konami's hidden mark | **does not carry it** | **carries it**: RC-725 and the title in katakana |
+| this repository | **this is the one disassembled** | collated instruction by instruction |
 
-Byte for byte they differ in 15,618 of 16,384, 95.3%. By instruction they share
-97.0%. What actually changes is in [Findings](FINDINGS.html).
+At the highest level the hard cartridge's opponent reacts **four times as
+often** as the easy one's, and on the easy cartridge that never happens at any
+level. Everything else is five constants and one change of form.
+
+Byte for byte the two differ in 15,618 of 16,384, 95.3%. That figure means
+nothing — both are relocated. By instruction they share **97.0%**. The detail
+of every difference is in [Findings](FINDINGS.html), and
+`tools/coteja_builds.py` produces it.
+

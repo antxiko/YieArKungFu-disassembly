@@ -329,5 +329,47 @@ class TestWeb(unittest.TestCase):
                              "excepcion" % v)
 
 
+def _lee(ruta):
+    with open(ruta, encoding="utf-8") as f:
+        return f.read()
+
+
+class TestImagenes(unittest.TestCase):
+    """Lo que la web tiene que ensenar."""
+
+    def test_el_protagonista_esta_en_los_dos_idiomas(self):
+        """Guardian del fallo del 2026-09-04: faltaba el protagonista."""
+        for fn in ("protagonista.png", "protagonista_en.png"):
+            self.assertTrue(
+                os.path.exists(os.path.join(DOCS, "imagenes", fn)),
+                "falta docs/imagenes/%s" % fn)
+
+    def test_estan_los_cinco_oponentes(self):
+        """Los cinco, no una muestra."""
+        for quien in ("wang", "tao", "chen", "lang", "wu"):
+            fn = os.path.join(DOCS, "imagenes", "oponente_%s.png" % quien)
+            self.assertTrue(os.path.exists(fn), "falta %s" % fn)
+            for pagina in ("index.html", os.path.join("es", "index.html")):
+                self.assertIn(quien.upper(),
+                              _lee(os.path.join(DOCS, pagina)),
+                              "%s no sale en %s" % (quien, pagina))
+
+    def test_las_dos_versiones_salen_en_la_portada(self):
+        """Que hay dos cartuchos distintos tiene que verse, no deducirse."""
+        for pagina, marca in (("index.html", "THE TWO BUILDS"),
+                              (os.path.join("es", "index.html"),
+                               "LAS DOS COMPILACIONES")):
+            texto = _lee(os.path.join(DOCS, pagina))
+            self.assertIn(marca, texto, "%s no explica las dos" % pagina)
+            self.assertIn("#builds", texto,
+                          "%s no lleva el enlace en el menu" % pagina)
+
+    def test_ya_no_se_publica_la_hoja_cruda_de_sprites(self):
+        """figuras.png era el volcado sin montar: lo sustituye el protagonista."""
+        self.assertFalse(
+            os.path.exists(os.path.join(DOCS, "imagenes", "figuras.png")),
+            "docs/imagenes/figuras.png ha vuelto")
+
+
 if __name__ == "__main__":
     unittest.main()

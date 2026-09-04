@@ -116,8 +116,8 @@ resto  el byte es un tile</code></pre>
 <p>La segunda, 0x7375, indexa una tabla de tablas por el oponente y despacha la que salga.</p>
 <p>Sin declarar las quince, el trazado estático se queda muy corto: solo las seis del reparto por oponente esconden <b>315 bytes de código</b>.</p>
 <h2 id="las-dos-compilaciones">Las dos compilaciones</h2>
-<p>De este cartucho circulan dos volcados:</p>
-<pre><code>easy  644c78c7d20bb30802888b513b384cf0ce4f9d8b6fd490f30e6211ac92274848
-hard  61c86ad465a81ded7ff66bbd8c6ab61d8dd48e668c639982fe698a4ef46d59b6</code></pre>
-<p>Byte a byte difieren en 15.618 de 16.384, el 95,3 %. Por instrucción comparten el 97,0 %. Lo que cambia de verdad está en <a href="HALLAZGOS.html">Hallazgos</a>.</p>
+<p><b>Hay dos cartuchos distintos de Yie Ar Kung-Fu</b>, y no se juegan igual. Esto es lo que lleva cada uno:</p>
+<table><tr><th></th><th>fácil</th><th>difícil</th></tr><tr><td>sha256</td><td><code>644c78c7…</code></td><td><code>61c86ad4…</code></td></tr><tr><td>cada cuánto reacciona el oponente</td><td>siempre <b>1 cuadro de cada 32</b></td><td><b>1 de cada 32, 16 u 8</b>, según el nivel</td></tr><tr><td>el arma larga de CHEN</td><td>dura 18 cuadros y crece hasta 8</td><td>dura 22 y crece hasta 10</td></tr><tr><td>los tres umbrales de altura</td><td>tres <code>cp</code> en línea</td><td>una tabla de tres bytes, con un valor cambiado</td></tr><tr><td>la marca oculta de Konami</td><td><b>no la lleva</b></td><td><b>la lleva</b>: RC-725 y el título en katakana</td></tr><tr><td>este repositorio</td><td><b>es el que está desensamblado</b></td><td>cotejada instrucción a instrucción</td></tr></table>
+<p>En el nivel más alto, el oponente del cartucho difícil reacciona <b>cuatro veces más a menudo</b> que el del fácil, y en el fácil eso no pasa en ningún nivel. Lo demás son cinco constantes y un cambio de forma.</p>
+<p>Byte a byte las dos difieren en 15.618 de 16.384, el 95,3 %. Esa cifra no vale nada: las dos están relocalizadas. Por instrucción comparten el <b>97,0 %</b>. El detalle de cada diferencia está en <a href="HALLAZGOS.html">Hallazgos</a>, y lo produce <code>tools/coteja_builds.py</code>.</p>
 <footer><p><em>Yie Ar Kung-Fu</em> lo publico Konami para MSX; su numero de catalogo es RC-725 y son 16 KB. Todos los derechos sobre el juego siguen siendo de sus titulares. Este trabajo es de preservacion, estudio y documentacion, y la imagen del cartucho no se distribuye.</p></footer></div>

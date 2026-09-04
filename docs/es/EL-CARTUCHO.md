@@ -92,10 +92,24 @@ del reparto por oponente esconden **315 bytes de código**.
 
 ## Las dos compilaciones
 
-De este cartucho circulan dos volcados:
+**Hay dos cartuchos distintos de Yie Ar Kung-Fu**, y no se juegan igual. Esto
+es lo que lleva cada uno:
 
-    easy  644c78c7d20bb30802888b513b384cf0ce4f9d8b6fd490f30e6211ac92274848
-    hard  61c86ad465a81ded7ff66bbd8c6ab61d8dd48e668c639982fe698a4ef46d59b6
+|  | fácil | difícil |
+|---|---|---|
+| sha256 | `644c78c7…` | `61c86ad4…` |
+| cada cuánto reacciona el oponente | siempre **1 cuadro de cada 32** | **1 de cada 32, 16 u 8**, según el nivel |
+| el arma larga de CHEN | dura 18 cuadros y crece hasta 8 | dura 22 y crece hasta 10 |
+| los tres umbrales de altura | tres `cp` en línea | una tabla de tres bytes, con un valor cambiado |
+| la marca oculta de Konami | **no la lleva** | **la lleva**: RC-725 y el título en katakana |
+| este repositorio | **es el que está desensamblado** | cotejada instrucción a instrucción |
 
-Byte a byte difieren en 15.618 de 16.384, el 95,3 %. Por instrucción comparten
-el 97,0 %. Lo que cambia de verdad está en [Hallazgos](HALLAZGOS.html).
+En el nivel más alto, el oponente del cartucho difícil reacciona **cuatro veces
+más a menudo** que el del fácil, y en el fácil eso no pasa en ningún nivel. Lo
+demás son cinco constantes y un cambio de forma.
+
+Byte a byte las dos difieren en 15.618 de 16.384, el 95,3 %. Esa cifra no vale
+nada: las dos están relocalizadas. Por instrucción comparten el **97,0 %**. El
+detalle de cada diferencia está en [Hallazgos](HALLAZGOS.html), y lo produce
+`tools/coteja_builds.py`.
+

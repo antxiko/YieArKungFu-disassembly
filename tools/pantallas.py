@@ -383,12 +383,10 @@ def main():
             f.write(bytes(v.b))
         png(os.path.join(carpeta, nombre + ".png"), pinta(v))
         print("  %-18s %5d bytes tocados" % (nombre, sum(v.tocado)))
-    # las figuras del luchador, tal como quedan en la tabla de patrones de
-    # sprite despues del bucle de 0x4ca2 y de su espejo
-    v = hechas[2][1]
-    lienzos = [figura(v, p) for p in range(0, 256, 4)]
-    png(os.path.join(carpeta, "figuras.png"), rejilla(lienzos, 16, sep=1), 3)
-    print("  figuras.png (%d figuras de 16x16)" % len(lienzos))
+    # El luchador NO se dibuja aqui. Volcar los 64 sprites de 16x16 de la
+    # tabla de patrones daba una hoja sin orden y sin figura: el protagonista
+    # se ARMA con seis de esos sprites en posiciones que cambian con la pose.
+    # De eso se ocupa tools/protagonista.py, que lee las recetas de 0x50ac.
     for i, nombre in enumerate(("wang", "tao", "chen", "lang", "wu")):
         hoja = hoja_del_oponente(rom, i)
         png(os.path.join(carpeta, "oponente_%s.png" % nombre),
