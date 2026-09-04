@@ -423,33 +423,6 @@ GALERIA = [
      "the script at 0x5da4 into the NAME table; the patterns and colours come "
      "from 0x605b and 0x6207. Compared against the emulator's VRAM 120 "
      "seconds into a game: <b>zero differences</b> in colour and pattern"),
-    ("oponente_wang.png",
-     "<b>WANG</b>, el primer oponente: 57 tiles con su color, tal como los "
-     "deja su guion en la VRAM 0x2880. Puestos de cuatro en cuatro se leen "
-     "las poses: la primera, entera, ocupa cuatro tiles de ancho por cinco de "
-     "alto. Los oponentes NO son sprites como el protagonista: son tiles",
-     "<b>WANG</b>, the first opponent: 57 tiles with their colour, as his "
-     "script leaves them at VRAM 0x2880. Laid four to a row the poses read "
-     "out: the first, whole, is four tiles wide by five tall. The opponents "
-     "are NOT sprites like the player: they are tiles"),
-    ("oponente_tao.png",
-     "<b>TAO</b>, el segundo, el que lanza bolas de fuego",
-     "<b>TAO</b>, the second, the one who throws fireballs"),
-    ("oponente_chen.png",
-     "<b>CHEN</b>, el tercero, el de la cadena: 68 tiles, el que mas gasta. "
-     "Y el unico al que la version dificil le cambia constantes -cinco- "
-     "todas de su arma larga",
-     "<b>CHEN</b>, the third, the one with the chain: 68 tiles, the biggest "
-     "spender. And the only one whose constants the hard build changes -five "
-     "of them- all belonging to his long weapon"),
-    ("oponente_lang.png",
-     "<b>LANG</b>, el cuarto, que es el que menos gasta de los cinco: 52 "
-     "tiles",
-     "<b>LANG</b>, the fourth, the one that spends the least of the five: 52 "
-     "tiles"),
-    ("oponente_wu.png",
-     "<b>WU</b>, el quinto y ultimo",
-     "<b>WU</b>, the fifth and last"),
 ]
 
 

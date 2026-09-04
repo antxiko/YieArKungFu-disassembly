@@ -2,6 +2,27 @@
 
 Lo que **no** está resuelto. Está aquí para que se vea, no para rellenar.
 
+## Cómo se colocan las poses de los oponentes
+
+Los oponentes no son sprites: son **tiles**, escritos en la tabla de nombres.
+Cada pose reparte sus tiles en una **forma irregular**, y la forma no es la
+misma de una pose a otra ni de un oponente a otro. Medido en una máquina de
+verdad: la pose de reposo de WANG son dieciséis tiles, del 0x10 al 0x1F, en un
+hueco de 4x5 cuya primera fila lleva un tile y la segunda tres. Esa misma forma
+monta bien a CHEN y a WU —y desbarata a TAO y a LANG—, así que no vale para
+todos.
+
+Las tablas ya están identificadas en el listado: 0x555C da cinco punteros, uno
+por oponente, y cada uno es otra tabla indexada por la pose (0xE184), que cae en
+bloques de entre siete y veintisiete bytes. Lo que **no** está descifrado es el
+formato de esos bloques: qué byte es un tile, cuál es un control y cómo termina
+una fila.
+
+Hasta que eso esté descifrado, esta web no publica las figuras de los
+oponentes. Las publicó hasta el 2026-09-04 como una rejilla de cuatro tiles de
+ancho, que era una suposición, y la suposición partía todas las poses en
+trozos.
+
 ## Cuál de las dos compilaciones salió antes
 
 Lo que se sabe está medido: comparten el 97,0 % de las instrucciones, difieren

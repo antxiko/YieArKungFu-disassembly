@@ -2,6 +2,25 @@
 
 What is **not** settled. It is here to be seen, not to pad anything out.
 
+## How the opponents' poses are laid out
+
+The opponents are not sprites: they are **tiles**, written into the name table.
+Each pose spreads its tiles in an **irregular shape**, and the shape is not the
+same from pose to pose or from opponent to opponent. Measured on a real machine:
+WANG's idle is sixteen tiles, 0x10 to 0x1F, in a 4x5 box whose top row holds one
+tile and whose second row holds three. That exact shape also assembles CHEN and
+WU correctly — and scrambles TAO and LANG, so it is not universal.
+
+The tables are already identified in the listing: 0x555C gives five pointers,
+one per opponent, and each of those is another table indexed by the pose
+(0xE184), landing in blocks of seven to twenty-seven bytes. What is **not**
+decoded is the format of those blocks — which byte is a tile, which is a
+control, and how a row ends.
+
+Until that is decoded, this site does not publish the opponents' figures. It
+published them until 2026-09-04 as a grid four tiles wide, which is a guess,
+and the guess cut every pose in pieces.
+
 ## Which of the two builds came first
 
 What is known is measured: they share 97.0% of their instructions, differ in five

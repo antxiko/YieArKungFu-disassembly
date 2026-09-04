@@ -344,15 +344,22 @@ class TestImagenes(unittest.TestCase):
                 os.path.exists(os.path.join(DOCS, "imagenes", fn)),
                 "falta docs/imagenes/%s" % fn)
 
-    def test_estan_los_cinco_oponentes(self):
-        """Los cinco, no una muestra."""
-        for quien in ("wang", "tao", "chen", "lang", "wu"):
-            fn = os.path.join(DOCS, "imagenes", "oponente_%s.png" % quien)
-            self.assertTrue(os.path.exists(fn), "falta %s" % fn)
-            for pagina in ("index.html", os.path.join("es", "index.html")):
-                self.assertIn(quien.upper(),
-                              _lee(os.path.join(DOCS, pagina)),
-                              "%s no sale en %s" % (quien, pagina))
+    def test_no_se_publican_figuras_sin_montar(self):
+        """Ni la hoja cruda de sprites ni las de tiles de oponente.
+
+        Las dos se publicaron con una anchura SUPUESTA y las dos salian
+        partidas. Mientras el formato de los bloques de pose de 0x555c no
+        este descifrado, esas figuras no se publican: lo que se publica es
+        la pregunta abierta.
+        """
+        for fn in os.listdir(os.path.join(DOCS, "imagenes")):
+            self.assertFalse(fn.startswith("oponente_"),
+                             "ha vuelto %s" % fn)
+        for pagina, marca in (("OPEN-QUESTIONS.md", "irregular shape"),
+                              (os.path.join("es", "PREGUNTAS-ABIERTAS.md"),
+                               "forma irregular")):
+            self.assertIn(marca, _lee(os.path.join(DOCS, pagina)),
+                          "%s no explica por que faltan" % pagina)
 
     def test_las_dos_versiones_salen_en_la_portada(self):
         """Que hay dos cartuchos distintos tiene que verse, no deducirse."""

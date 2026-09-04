@@ -337,10 +337,16 @@ def tile_pintado(v, tercio, t):
 def hoja_del_oponente(rom, cual):
     """Los tiles que el guion del oponente deja en el segundo tercio.
 
-    El guion escribe desde la VRAM 0x2880, que es el tile 0x10 del tercio 1, y
-    los tiles van CUATRO por fila: con esa anchura la primera pose sale entera
-    -cabeza, torso y piernas- y las siguientes detras. Cuantos tiles ocupa cada
-    oponente lo dice su propio guion, que es de longitud variable.
+    OJO: esto devuelve los tiles SUELTOS, en el orden en que caen en la VRAM.
+    NO es la figura. Los oponentes se dibujan como tiles en la tabla de
+    nombres, y CADA POSE los reparte en una forma irregular -medido en la
+    maquina: la de reposo de WANG son dieciseis tiles en un hueco de 4x5 con
+    la fila de arriba a medias, y las demas poses y los demas oponentes usan
+    formas distintas-. Por eso ponerlos en una rejilla de anchura fija parte
+    las figuras, que es lo que se publicaba antes.
+
+    Mientras el formato de los bloques de pose de 0x555c no este descifrado,
+    esta funcion se queda para mirar los tiles con tools/, no para la web.
     """
     v = combate(rom, cual)
     patron, _ = ESCENARIOS[cual]
@@ -351,7 +357,6 @@ def hoja_del_oponente(rom, cual):
     primero = (min(tocados) - 0x2800) // 8
     ultimo = (max(tocados) - 0x2800) // 8
     return [tile_pintado(v, 1, t) for t in range(primero, ultimo + 1)]
-
 
 
 def recorta(img, y0, x0, alto, ancho):
@@ -387,11 +392,8 @@ def main():
     # tabla de patrones daba una hoja sin orden y sin figura: el protagonista
     # se ARMA con seis de esos sprites en posiciones que cambian con la pose.
     # De eso se ocupa tools/protagonista.py, que lee las recetas de 0x50ac.
-    for i, nombre in enumerate(("wang", "tao", "chen", "lang", "wu")):
-        hoja = hoja_del_oponente(rom, i)
-        png(os.path.join(carpeta, "oponente_%s.png" % nombre),
-            rejilla(hoja, 4, sep=0), 5)
-        print("  oponente_%s.png (%d tiles)" % (nombre, len(hoja)))
+    # Las hojas de oponente NO se publican: eran tiles sueltos puestos de
+    # cuatro en cuatro, y eso parte las figuras. Ver hoja_del_oponente.
 
 
 if __name__ == "__main__":
