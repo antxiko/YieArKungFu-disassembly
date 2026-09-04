@@ -76,10 +76,12 @@ test:
 	@echo "=================================================================="
 	@python3 -m unittest discover -s tests -v
 
-# Dibuja los bloques de datos graficos declarados en el .notes, para MIRARLOS.
+# Monta las pantallas del cartucho ejecutando sus propios pasos, para MIRARLAS.
+# No son capturas: pantallas.py corre en Python el interprete de guiones de
+# 0x442c y el de listas de 0x44a6, los rellenos y el espejo de 0x4c46.
 imagenes: $(ROM)
 	@mkdir -p work/gfx
-	python3 tools/dibuja.py $(ROM) $(ORG) $(SRC)/yiear.notes work/gfx
+	python3 tools/pantallas.py $(ROM) $(ORG) work/gfx
 
 # LA WEB
 #
