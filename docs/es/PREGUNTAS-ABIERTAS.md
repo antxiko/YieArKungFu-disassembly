@@ -2,26 +2,19 @@
 
 Lo que **no** está resuelto. Está aquí para que se vea, no para rellenar.
 
-## Cómo se colocan las poses de los oponentes
+## Los bloques de pose cortos
 
-Los oponentes no son sprites: son **tiles**, escritos en la tabla de nombres.
-Cada pose reparte sus tiles en una **forma irregular**, y la forma no es la
-misma de una pose a otra ni de un oponente a otro. Medido en una máquina de
-verdad: la pose de reposo de WANG son dieciséis tiles, del 0x10 al 0x1F, en un
-hueco de 4x5 cuya primera fila lleva un tile y la segunda tres. Esa misma forma
-monta bien a CHEN y a WU —y desbarata a TAO y a LANG—, así que no vale para
-todos.
+La tabla de poses de cada oponente alterna: las entradas **pares** apuntan a un
+bloque largo que trae una figura —su alto, su ancho y sus tiles, comprimidos— y
+las **impares** a un bloque de siete bytes clavados que no trae figura ninguna.
+Siete bytes son cuatro cajas de golpe, una columna, una fila y un byte que
+sobra. La lectura de ese último byte **no está cerrada**.
 
-Las tablas ya están identificadas en el listado: 0x555C da cinco punteros, uno
-por oponente, y cada uno es otra tabla indexada por la pose (0xE184), que cae en
-bloques de entre siete y veintisiete bytes. Lo que **no** está descifrado es el
-formato de esos bloques: qué byte es un tile, cuál es un control y cómo termina
-una fila.
-
-Hasta que eso esté descifrado, esta web no publica las figuras de los
-oponentes. Las publicó hasta el 2026-09-04 como una rejilla de cuatro tiles de
-ancho, que era una suposición, y la suposición partía todas las poses en
-trozos.
+La consecuencia se puede medir. De trece volcados de la tabla de nombres
+tomados de una máquina de verdad, diez reproducen tile a tile una pose calculada
+desde la ROM. Los otros tres enseñan figuras hechas con tiles que los bloques
+largos no nombran nunca —0x27, 0x30, 0x35 a 0x3A—, así que hay algo más
+colocándolos, y los bloques cortos son el sospechoso obvio.
 
 ## Cuál de las dos compilaciones salió antes
 

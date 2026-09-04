@@ -423,6 +423,42 @@ GALERIA = [
      "the script at 0x5da4 into the NAME table; the patterns and colours come "
      "from 0x605b and 0x6207. Compared against the emulator's VRAM 120 "
      "seconds into a game: <b>zero differences</b> in colour and pattern"),
+    ("oponente_wang.png",
+     "<b>WANG</b>, el primer oponente, con sus siete poses. Los oponentes NO "
+     "son sprites como el protagonista: son <b>tiles</b> escritos en la tabla "
+     "de nombres, y cada pose es un RECTANGULO de alto por ancho con sus "
+     "tiles comprimidos dentro del propio bloque. La de reposo de WANG es "
+     "<code>00 10 E3 FF 11</code>: un hueco, la cabeza, tres huecos y quince "
+     "tiles correlativos. Veinte, que es 5 x 4",
+     "<b>WANG</b>, the first opponent, in his seven poses. The opponents are "
+     "NOT sprites like the player: they are <b>tiles</b> written into the "
+     "name table, and each pose is a RECTANGLE of height by width with its "
+     "tiles compressed inside the pose block itself. WANG&rsquo;s idle is "
+     "<code>00 10 E3 FF 11</code>: a gap, the head, three gaps and fifteen "
+     "consecutive tiles. Twenty, which is 5 x 4"),
+    ("oponente_tao.png",
+     "<b>TAO</b>, el segundo. Cada oponente tiene su propia anchura de pose "
+     "-TAO 4 tiles, WANG 5, CHEN y LANG 5, WU 4-, y por eso ponerlos todos a "
+     "cuatro por fila, que es lo que hacia esta web hasta el 2026-09-04, "
+     "partia las figuras",
+     "<b>TAO</b>, the second. Each opponent has his own pose width -TAO 4 "
+     "tiles, WANG 5, CHEN and LANG 5, WU 4- which is why laying them all four "
+     "to a row, as this site did until 2026-09-04, cut the figures to "
+     "pieces"),
+    ("oponente_chen.png",
+     "<b>CHEN</b>, el tercero, el de la cadena. Es el unico al que la version "
+     "dificil le cambia constantes -cinco-, todas de su arma larga",
+     "<b>CHEN</b>, the third, the one with the chain. He is the only one "
+     "whose constants the hard build changes -five of them- all belonging to "
+     "his long weapon"),
+    ("oponente_lang.png",
+     "<b>LANG</b>, el cuarto, con ocho poses",
+     "<b>LANG</b>, the fourth, with eight poses"),
+    ("oponente_wu.png",
+     "<b>WU</b>, el quinto y ultimo, tambien con ocho. Su tabla de poses "
+     "tiene VEINTE entradas, dos mas que la de los otros cuatro",
+     "<b>WU</b>, the fifth and last, also with eight. His pose table has "
+     "TWENTY entries, two more than the other four"),
 ]
 
 

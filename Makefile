@@ -90,6 +90,8 @@ imagenes: $(ROM)
 # make_web.py, que declara las cifras medidas de ESTE cartucho.
 web: $(ROM)
 	python3 tools/pantallas.py $(ROM) $(ORG) docs/imagenes
+	cd tools && python3 protagonista.py ../$(ROM) ../docs/imagenes
+	cd tools && python3 oponentes.py ../$(ROM) ../docs/imagenes
 	python3 tools/md2html.py docs en
 	python3 tools/md2html.py docs/es es
 	python3 tools/make_web.py docs/imagenes docs/index.html en

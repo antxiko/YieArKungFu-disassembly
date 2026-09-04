@@ -2,24 +2,19 @@
 
 What is **not** settled. It is here to be seen, not to pad anything out.
 
-## How the opponents' poses are laid out
+## The short pose blocks
 
-The opponents are not sprites: they are **tiles**, written into the name table.
-Each pose spreads its tiles in an **irregular shape**, and the shape is not the
-same from pose to pose or from opponent to opponent. Measured on a real machine:
-WANG's idle is sixteen tiles, 0x10 to 0x1F, in a 4x5 box whose top row holds one
-tile and whose second row holds three. That exact shape also assembles CHEN and
-WU correctly — and scrambles TAO and LANG, so it is not universal.
+Each opponent's pose table alternates: the **even** entries point at a long
+block that carries a figure — its height, its width and its tiles, compressed —
+and the **odd** ones at a block of exactly seven bytes that carries no figure at
+all. Seven bytes is four hit boxes, a column and a row, and one byte left over.
+The reading of that last byte is **not settled**.
 
-The tables are already identified in the listing: 0x555C gives five pointers,
-one per opponent, and each of those is another table indexed by the pose
-(0xE184), landing in blocks of seven to twenty-seven bytes. What is **not**
-decoded is the format of those blocks — which byte is a tile, which is a
-control, and how a row ends.
-
-Until that is decoded, this site does not publish the opponents' figures. It
-published them until 2026-09-04 as a grid four tiles wide, which is a guess,
-and the guess cut every pose in pieces.
+The consequence is measurable. Of thirteen name-table dumps taken from a real
+machine, ten reproduce a pose computed from the ROM tile for tile. The other
+three show figures built from tiles the long blocks never name — 0x27, 0x30,
+0x35 to 0x3A — so something else is placing them, and the short blocks are the
+obvious suspect.
 
 ## Which of the two builds came first
 
