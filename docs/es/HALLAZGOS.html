@@ -1,0 +1,158 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hallazgos · Yie Ar Kung-Fu (Konami, 1985)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Portada</a><a href="EMPEZAR.html">Empezar</a><a href="EL-JUEGO.html">El juego</a><a href="EL-CARTUCHO.html">El cartucho</a><a href="EL-CODIGO.html">El código</a><a href="HALLAZGOS.html" style=color:var(--tinta)>Hallazgos</a><a href="EN-EL-EMULADOR.html">En el emulador</a><a href="PREGUNTAS-ABIERTAS.html">Preguntas abiertas</a><a href="../FINDINGS.html" style="margin-left:auto;color:var(--oro)">English</a></nav>
+<h1 id="hallazgos">Hallazgos</h1>
+<p>Todo lo que sigue está medido sobre el binario. Donde hay una cifra, hay una herramienta del repositorio que la saca.</p>
+<h2 id="las-dos-compilaciones-son-el-mismo-programa">Las dos compilaciones son el mismo programa</h2>
+<p>Byte a byte, la versión fácil y la difícil difieren en <b>15.618 de 16.384 bytes</b>, el 95,3 %. Esa cifra no vale para nada: las dos están <b>relocalizadas</b>, y un byte de más en un sitio desplaza todo lo que va detrás y con ello todas las direcciones absolutas.</p>
+<p><code>tools/coteja_builds.py</code> las recorre instrucción a instrucción con la tabla de longitudes del Z80 y sustituye por un comodín todo operando de 16 bits que caiga dentro del cartucho —que es exactamente lo que la relocalización mueve—. Así comparten <b>3.798 de las 3.917</b> instrucciones de la fácil, el <b>97,0 %</b>.</p>
+<p>Las constantes que <b>no</b> se enmascaran son las que confirman el resultado: una dirección de RAM como 0xE000 o un valor como 0x0080 no se desplazan, y siguen coincidiendo.</p>
+<h2 id="lo-que-cambia-de-verdad-la-mascara-fija-se-vuelve-variable">Lo que cambia de verdad: la máscara fija se vuelve variable</h2>
+<p>La versión fácil deja pasar un cuadro de cada 64 y uno de cada 32 con máscaras escritas dentro del código:</p>
+<pre><code>0x74b6   ld a,(0e003h) / and 03fh / ret nz
+0x77df   ld hl,0e003h / ld a,(hl) / and 03eh / ret nz</code></pre>
+<p>En la versión difícil, en esos dos sitios exactos, van delante estas ocho instrucciones, que en la fácil <b>no aparecen ni una sola vez</b> —buscado sobre los 16.384 bytes—:</p>
+<pre><code>ld b,03eh
+ld a,(0e056h)
+and a
+jr z,+7
+ld b,01eh
+dec a
+jr z,+2
+ld b,00eh</code></pre>
+<p>y el <code>and 03fh</code> pasa a ser <code>and b</code>. La máscara ya no es fija: la elige 0xE056, el nivel. Con 0x3E la condición se cumple una vez cada 32 cuadros, con 0x1E una cada 16 y con 0x0E una cada 8. En el nivel más alto el oponente reacciona <b>cuatro veces más a menudo</b>, y en la versión fácil eso no pasa nunca.</p>
+<p>Lo demás son <b>cinco constantes</b>, todas del arma larga del tercer oponente:</p>
+<pre><code>0x70e3   ld a,012h  -&gt;  ld a,016h    la duración, de 18 a 22 cuadros
+0x7104   cp 008h    -&gt;  cp 00ah      crece hasta 10 en vez de hasta 8
+0x7109   cp 007h    -&gt;  cp 009h      y el tope de la otra rama, igual
+0x77ec   bit 6,a    -&gt;  bit 7,a      otro bit del dato
+0x77ee   ld a,001h  -&gt;  ld a,000h    y el valor, al revés</code></pre>
+<p>Y un cambio de forma: los tres umbrales de altura de 0x4AAF, que en la fácil son tres <code>cp</code> incrustados —0x86, 0x7C, 0x73—, en la difícil salen a una tabla de tres bytes, <code>72 7C 86</code>, con el primero cambiado de 0x73 a 0x72.</p>
+<h2 id="solo-una-de-las-dos-lleva-la-marca-oculta-de-konami">Solo una de las dos lleva la marca oculta de Konami</h2>
+<p>Konami escondía su número de catálogo y el título en katakana al final de muchos cartuchos; lo descubrió <b>Manuel Pazos</b> (<a href="https://twitter.com/ManuelPazosMSX">@ManuelPazosMSX</a>).</p>
+<p><code>tools/busca_marca_konami.py</code> la rastrea por toda la ROM, no solo en el sitio de siempre. La versión <b>difícil la lleva</b>: <b>RC-725</b> y el título en katakana, diez bytes que cierran en 0x7FFF.</p>
+<p>La versión <b>fácil no</b>. En ese mismo hueco, los últimos dieciséis bytes son</p>
+<pre><code>59 49 45 20 41 52 20 4B 55 4E 47 20 46 55 FF FF        YIE AR KUNG FU</code></pre>
+<p>en <b>ASCII latino</b>, y no lo lee nadie: el cartucho no sabe leer ASCII, porque su alfabeto empieza la A en el tile 0x21.</p>
+<p>Lo que eso quiera decir sobre cuál salió antes o de dónde salió cada una <b>no lo dice el binario</b>, y aquí no se supone.</p>
+<h2 id="el-fondo-del-templo-esta-en-la-tabla-de-nombres">El fondo del templo está en la tabla de nombres</h2>
+<p>De los catorce guiones largos del cartucho, <b>uno solo escribe en 0x3800</b>: el de 0x5DA4. Y lo que pone ahí, en 327 bytes, es el templo entero —las columnas, las linternas, el cartel de los dos kanjis, el gong, las ventanas y el suelo de ladrillo—.</p>
+<p>Es el único guion largo que no va ni a patrones ni a color. Los otros trece llenan la tabla de patrones y la de color con los tiles que este usa.</p>
+<h2 id="las-tablas-que-parecian-cinco-escenarios-son-los-cinco-oponentes">Las tablas que parecían cinco escenarios son los cinco oponentes</h2>
+<p>Las tablas de 0x4B9C y 0x4BA6 dan un guion de patrón y otro de color por cada valor de 0xE054, y se dibujan al montar la pantalla, así que parecen cinco fondos distintos. No lo son, y hay tres medidas que lo dicen:</p>
+<ol><li>Montando la pantalla con los cinco y comparándolas cambian unos <b>4.000 bytes de VRAM</b>, pero <b>ninguno de los tiles que cambian está en uso</b> en la tabla de nombres del fondo. El templo se ve idéntico con los cinco.</li><li>Se dibujan en la VRAM 0x2880, que son los tiles 0x10 a 0x48 del <b>segundo y tercer tercio</b>, o sea la mitad de abajo de la pantalla, y encima de la fuente, que ahí ya no hace falta porque el marcador está arriba del todo.</li><li>Y sobre todo: 0x4C3E copia esos mismos tiles <b>reflejados</b> a los 0x88 en adelante, que son justo los que la tabla de nombres usa para pintar al oponente. Un fondo no necesita versión en espejo; un luchador que puede mirar a los dos lados, sí.</li></ol>
+<h2 id="la-prueba-del-0x78">La prueba del 0x78</h2>
+<p>El MSX no sabe reflejar ni un sprite ni un tile, así que un luchador que mira a los dos lados necesita las dos versiones guardadas.</p>
+<p>0x4C3E copia los tiles del oponente de la VRAM 0x2880 a la 0x2440 dando la vuelta a cada byte: del tile <b>0x10</b> al <b>0x88</b>, o sea <b>0x78 más allá</b>.</p>
+<p>Y el descompresor de poses, cuando le toca espejar un bloque (0x5454), cambia cada tile por su gemelo <b>sumándole 0x78</b> —y restándoselo a los de 0x88 para arriba—. Las dos mitades del mismo truco, a 10 KB de distancia una de otra.</p>
+<p>Un detalle del bucle que costó un render mal antes de comparar con la VRAM: en 0x4C46 <b>el origen no avanza</b>, solo el destino. Los tres tercios se llenan con la misma copia reflejada de 0x2880.</p>
+<h2 id="el-mismo-rotulo-de-doce-bytes-dos-premios-distintos">El mismo rótulo de doce bytes, dos premios distintos</h2>
+<p>La lista de 0x47CC dice <b>PERFECT 3000</b> y se dibuja en la fila 16 columna 10 por la puerta normal, 0x449E, que se lee sus dos primeros bytes como dirección de VRAM.</p>
+<p>Pero 0x48AD entra por 0x449A, que <b>no lee dirección</b>, con DE en 0x47CE —dos bytes más allá, saltándose justamente esa dirección— y HL en la VRAM 0x388A, la fila 4. Y acto seguido 0x48B2 escribe el tile <b>0x15</b>, que es el dígito 5, en la VRAM 0x3892, que es la novena letra: donde ponía un 3 pone un 5.</p>
+<p>El rótulo pasa a decir <b>PERFECT 5000</b>, y lo que se suma son 0x5000 en BCD. Doce bytes de texto para dos premios.</p>
+<h2 id="cada-figura-del-luchador-lleva-su-destino-delante">Cada figura del luchador lleva su destino delante</h2>
+<p>Los trece guiones de 0x596F a 0x5D02 van pegados, sin un solo byte muerto entre ellos, pero la tabla de 0x4CF0 no apunta al principio de cada uno: apunta <b>dos bytes más allá</b>. Esos dos bytes son una dirección de VRAM, y en los trece cae en 0x1820–0x18A0.</p>
+<p>No es un descuadre: el cartucho dibuja estos mismos guiones por dos caminos.</p>
+<ul><li>El bucle de 0x4CA4 entra por 0x4452, que quiere el destino en HL y se lo da la tabla de 0x4D0A. Por eso empieza a leer pasados los dos bytes.</li><li>El bucle de 0x5098 entra por 0x4423, que es el cuerpo del comando 0x80: <b>lee el destino del propio guion</b>. Por eso empieza dos bytes antes.</li></ul>
+<p>Lo demuestra una cuenta: <b>veinticuatro</b> de las palabras del bloque de recetas 0x50A6–0x5254 valen exactamente una de esas trece direcciones menos dos, y <b>ninguna</b> vale una de las trece de la tabla.</p>
+<h2 id="una-entrada-de-mas-metia-178-bytes-de-basura-en-el-listado">Una entrada de más metía 178 bytes de basura en el listado</h2>
+<p>La regla para saber cuántas entradas tiene una tabla de punteros —leer palabras mientras caigan dentro del cartucho— da <b>seis</b> para la de 0x6B4B. Son <b>cinco</b>: la sexta, 0x583A, cae dentro del guion que 0x43F6 dibuja, y seguirla como código llenaba el listado de <code>rst 18h</code> y <code>sbc a,a</code>.</p>
+<p>Cinco es lo que dice el índice: 0x6B42 lee 0xE054, el oponente, y de esos hay cinco. Y la prueba de que la tabla acaba en 0x6B55 es que <b>0x4182 hace <code>call 0x6b55</code></b> y 0x42E6 un <code>jp 0x6b55</code>: ahí empieza código al que se llama por su nombre.</p>
+<h2 id="un-salto-que-aterriza-dentro-de-otra-instruccion">Un salto que aterriza dentro de otra instrucción</h2>
+<p>El <code>jr z</code> de 0x4625 tiene los bytes <code>28 08</code>, o sea desplazamiento 8, y salta a <b>0x462F</b>. Y 0x462F no es el principio de ninguna instrucción: es el <b>tercer byte</b> del <code>jp 0x46cf</code> que empieza en 0x462D.</p>
+<pre><code>462d  C3 CF 46     jp 0x46cf
+4630  CD 05 6B     call 0x6b05</code></pre>
+<p>Cayendo en 0x462F, el Z80 se encuentra el byte <b>0x46</b> suelto y lo ejecuta como lo que es: <code>ld b,(hl)</code>, una instrucción de un byte que solo carga B. Y acto seguido cae en el <code>call</code> de 0x4630, que es a donde se quería ir. El byte alto de una dirección haciendo de instrucción de paso, y dos bytes ahorrados.</p>
+<p>Que es así y no un fallo del trazado lo dice el desplazamiento: es <b>0x08 y no 0x09</b>, que es lo que haría falta para caer en 0x4630 limpiamente.</p>
+<h2 id="el-azar-es-un-registro-de-diez-bytes-con-semilla-fija">El azar es un registro de diez bytes con semilla fija</h2>
+<p>0x6D2C corre un registro de desplazamiento de <b>diez bytes</b>, de 0xE135 a 0xE13E: saca el bit por arriba de 0xE13E con <code>srl</code>, lo arrastra por los nueve de abajo con <code>rr</code> y lo vuelve a meter por arriba, dos veces por llamada. Devuelve los dos bits bajos, un número de 0 a 3.</p>
+<p>La semilla son los diez bytes que 0x5295 copia al empezar el asalto, y hay <b>cuatro juegos</b> distintos en 0x52CD elegidos por 0xE056. Con eso el oponente no se repite pero tampoco depende de nada de fuera: la partida sale igual jugada igual, que es justo lo que hace falta para poder comprobarla.</p>
+<h2 id="tres-trozos-de-codigo-que-no-alcanza-nadie">Tres trozos de código que no alcanza nadie</h2>
+<p>Veintiséis bytes en 0x73B3, tres en 0x73DF y ocho en 0x74AE decodifican como código Z80 coherente —el primero es <code>call 0x7399 / ld hl,0e003h / ld a,(0e165h)…</code>—. No los alcanza nadie, y no es una impresión: <code>tools/apunta_a.py</code> busca la palabra de 16 bits en <b>los 16.384 bytes</b> del cartucho, no solo en el listado, y ninguna dirección cae dentro.</p>
+<p>Delante de los tres hay un salto que pasa por encima. El de 0x73B1 es un <code>jr</code> de 0x48 que se planta en 0x73FB, saltándose los veintiséis bytes de golpe.</p>
+<h2 id="dos-comentarios-heredados-que-el-binario-contradecia">Dos comentarios heredados que el binario contradecía</h2>
+<p>Comentar destapa errores ya escritos. Dos que salieron en esta pasada:</p>
+<ul><li><code>copia_256_a_vram</code> <b>no copia 256 bytes</b>. Lo que hace 0x441D es poner a cero el byte <b>alto</b> de la cuenta y dejar el bajo como venga, así que copia los C bytes que traiga quien llama. Serían 256 solo si C entrase valiendo cero, y el único que entra por ahí trae en C la anchura de la fila que está dibujando.</li><li><b>0xE160 es la coordenada Y</b>, no una distancia. Lo dice que 0x5064 la sume al <b>primer</b> byte de cada sprite, que en el TMS9918 es la Y. Encaja además con que la curva del salto se le sume y con que su valor de reposo sea 0x87, o sea 135, la línea del suelo.</li></ul>
+<footer><p><em>Yie Ar Kung-Fu</em> lo publico Konami para MSX; su numero de catalogo es RC-725 y son 16 KB. Todos los derechos sobre el juego siguen siendo de sus titulares. Este trabajo es de preservacion, estudio y documentacion, y la imagen del cartucho no se distribuye.</p></footer></div>

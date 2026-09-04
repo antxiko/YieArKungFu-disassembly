@@ -1,0 +1,119 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>El código · Yie Ar Kung-Fu (Konami, 1985)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Portada</a><a href="EMPEZAR.html">Empezar</a><a href="EL-JUEGO.html">El juego</a><a href="EL-CARTUCHO.html">El cartucho</a><a href="EL-CODIGO.html" style=color:var(--tinta)>El código</a><a href="HALLAZGOS.html">Hallazgos</a><a href="EN-EL-EMULADOR.html">En el emulador</a><a href="PREGUNTAS-ABIERTAS.html">Preguntas abiertas</a><a href="../THE-CODE.html" style="margin-left:auto;color:var(--oro)">English</a></nav>
+<h1 id="el-codigo">El código</h1>
+<h2 id="todo-pasa-dentro-de-la-interrupcion">Todo pasa dentro de la interrupción</h2>
+<p>INIT (0x4010) engancha el manejador a mano: pone un <code>0xC3</code> —o sea un <code>jp</code>— en H.KEYI (0xFD9A) y la dirección 0x4043 detrás, deja la pila en 0xE400, borra 0xE000–0xE3FF con un <code>ldir</code>, carga los gráficos y se planta en un salto a sí mismo. A partir de ahí <b>el juego entero corre dentro de la interrupción</b>.</p>
+<p>El manejador de 0x4043 lee el estado del VDP, le da un cuadro al motor de sonido, y con el candado de 0xE006 abierto lee los mandos y hace el cuadro de juego. Al salir vuelve a mirar el estado: si hay otra interrupción pendiente, le da otro cuadro al sonido.</p>
+<h2 id="el-reparto-por-escenas">El reparto por escenas</h2>
+<p>0xE000 es la <b>escena</b> —de 0 a 8, la tabla de 0x409F— y 0xE001 el <b>paso</b> dentro de ella. Cada escena empieza con una cadena de <code>djnz</code>, que es la manera más corta de escribir un <code>switch</code>: B entra valiendo el paso, y cada <code>djnz</code> lo baja uno y salta si todavía no ha llegado a cero.</p>
+<p>La escena 0 es la portada: el paso 0 monta la pantalla entera, el 1 dibuja el VIDEO CARTRIDGE, el 2 lo borra y el 3 pinta el logotipo y el PUSH SPACE KEY.</p>
+<h2 id="los-mandos">Los mandos</h2>
+<p>Se leen el joystick y el teclado por separado y se juntan con un <code>or</code>, así que da igual con qué se juegue. La clave es que los dos acaban en la misma disposición de bits, la del puerto A del PSG:</p>
+<pre><code>bit 0  arriba        bit 3  derecha
+bit 1  abajo         bit 4  disparo A
+bit 2  izquierda     bit 5  disparo B</code></pre>
+<p>Para llegar ahí desde el teclado hacen falta <b>cinco rotaciones encadenadas</b>, que es lo que hace 0x453F. Que las cinco cuadran no es una suposición: con el reparto normal de la matriz del MSX —fila 8 con SPACE en el bit 0, LEFT en el 4, UP en el 5, DOWN en el 6 y RIGHT en el 7— cada <code>and</code> cae exactamente en su sitio.</p>
+<p>Con el bit 6 de 0xE002 a cero no hay nadie jugando y 0x4564 se inventa los mandos: es como corre la secuencia de atracción, avanzando por la lista de 0x55DE una posición cada 0x20 cuadros.</p>
+<h2 id="como-se-monta-el-jugador">Cómo se monta el jugador</h2>
+<p>El jugador es <b>de sprites</b>. 0x4FBE reparte los seis patrones de 0x50A6 por el campo de patrón de los seis primeros sprites —de dos en dos, para no tocar coordenadas ni color— y luego ejecuta la receta que 0xE154 elija en la tabla de 0x50AC.</p>
+<p>Una receta es una tira de campos con el <b>nibble alto por marca</b>:</p>
+<table><tr><th>marca</th><th>qué hace</th></tr><tr><td>0x7-</td><td>el nibble bajo va a 0xE174, el mapa de bits que consultan los golpes</td></tr><tr><td>0x8-</td><td>el nibble bajo va a 0xE172, la pose con la que se comprueba el golpe; y en medio del bucle, cierra la lista</td></tr><tr><td>0xF-</td><td>el nibble bajo sirve para calcular la X del golpe, 0xE171</td></tr><tr><td>resto</td><td>bytes de sprite: el primero se suma a la Y y el segundo a la X</td></tr></table>
+<p>Y hay <b>dos cuerpos</b>, no uno. Mirando a la derecha se usa 0x5064, que suma directamente. Mirando a la izquierda, 0x5021 se lee del propio dato un puntero a otra receta y ejecuta 0x5028, que además <b>espeja</b> la segunda coordenada con <code>ld a,010h / add a,(hl) / neg / add a,b</code>.</p>
+<h2 id="como-se-monta-el-oponente">Cómo se monta el oponente</h2>
+<p>El oponente es <b>de tiles</b>. 0x5374 escribe números de tile en la tabla de nombres: baja hasta la fila que diga 0xE182, coloca la columna con 0xE183 y copia el bloque fila a fila con LDIRVM.</p>
+<p>Lo que tiene de particular son las cuentas de 0x5387 a 0x53C1, que <b>recortan</b>: si la figura se sale por la izquierda o por la derecha de las treinta y dos columnas, se acorta la anchura y se corre el origen, en vez de dibujar encima de la fila siguiente.</p>
+<p>Y las poses vienen comprimidas. 0x541D las descomprime a 0xE280 con tres comandos —<code>0xF-</code> para tiles correlativos, <code>0xE-</code> para huecos y cualquier otro byte para un tile suelto— y, si la pose es impar, 0x5454 vuelve a escribirlas al revés en 0xE2D0 cambiando cada tile por su gemelo.</p>
+<h2 id="las-cajas-de-golpe">Las cajas de golpe</h2>
+<p>0x52F5 coge de la receta del oponente cuatro bytes, les suma la X de 0xE16E y con cada uno escribe una <b>pareja</b> en 0xE198: el valor y el valor más 10, más 8, más 6 y más 6. Son cuatro tramos horizontales, cada uno con su principio y su final, de mayor a menor anchura.</p>
+<p>Y 0x4A0F es quien los usa: coge la X del golpe en 0xE171 y mira si cae dentro de uno. Antes hay tres cortes —el bit de 0xE173 que toca a la pose, que la pose del oponente no sea de 0x0E para arriba, y que la Y del jugador haya llegado a 0x72—.</p>
+<p>La altura del golpe la lleva aparte la tabla de 0x4B54: tres valores, 0x84, 0x91 y 0x9F, o sea alto, medio y bajo.</p>
+<h2 id="el-motor-de-sonido">El motor de sonido</h2>
+<p>Tres voces, con la tabla de canales en RAM y <b>ocho bytes por canal</b>. Hay dos zonas: 0xE01A para la música y 0xE032 para los efectos, y el número de melodía decide en cuál va —por debajo de 8 es efecto, de 8 para arriba música, y de 0x0C para arriba se usan tres canales en vez de dos—.</p>
+<p>Los seis bits bajos del número son el índice de la tabla de punteros de 0x7DB6, que tiene veintiuna entradas. La primera no apunta a ninguna parte, así que el reparto útil va de la 1 a la 20, y esas veinte van a <b>dieciséis melodías distintas</b>: varias comparten la de 0x7FEF, que es un solo 0xFF, o sea la melodía que no suena.</p>
+<p>Hay dos formatos de melodía. El corto trae duración, envolvente y notas. El largo, que se usa cuando el bit 7 del número está puesto, añade la unidad de duración, el decaimiento, la <b>octava</b> y el medio tono.</p>
+<p><b>Las notas.</b> La tabla de 0x7DAC tiene diez valores: 106, 100, 95, 89, 84, 80, 75, 71, 67 y 63. La razón entre cada uno y el siguiente es 1,06, que es justo la del semitono (2 elevado a 1/12 = 1,0595): son <b>diez semitonos seguidos</b>. Y son un <b>divisor</b> del PSG, no una velocidad ni una frecuencia: cuanto más bajo, más aguda la nota. La octava se aplica duplicando el divisor, que es bajar una octava cada vez.</p>
+<p><b>La prioridad.</b> Cuando se entra por 0x7BCC con D a cero —que es como entra todo el juego— la melodía se toca sin más. Pero desde dentro del propio motor se entra con D = 1, y entonces 0x7BF3 compara con la que ya suena en ese canal y <b>no la pisa</b> si la de ahora es igual o más alta.</p>
+<footer><p><em>Yie Ar Kung-Fu</em> lo publico Konami para MSX; su numero de catalogo es RC-725 y son 16 KB. Todos los derechos sobre el juego siguen siendo de sus titulares. Este trabajo es de preservacion, estudio y documentacion, y la imagen del cartucho no se distribuye.</p></footer></div>

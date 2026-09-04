@@ -1,0 +1,81 @@
+# Puntos de entrada de Yie Ar Kung-Fu (Konami, RC-725, 1985). ROM de 16 KB
+# en 0x4000. Esta es la version FACIL; ver la nota sobre las dos compilaciones.
+#
+# La BIOS lee la cabecera "AB" y llama a INIT tras inicializar la maquina. En
+# el volcado los bytes 0-9 son 41 42 10 40 00 00 00 00 00 00: declara SOLO
+# INIT, y aqui INIT esta pegado a la cabecera, en 0x4010.
+0x4010   # INIT, declarado en la cabecera del cartucho (bytes 2-3: 10 40)
+
+# INIT engancha la interrupcion a mano, igual que King's Valley y Konami's
+# Baseball: pone un 0xC3 (jp) en H.KEYI (0xFD9A) y la direccion 0x4043 detras
+# -`ld a,0c3h / ld (0fd9ah),a` seguido de `ld hl,04043h / ld (0fd9bh),hl` en
+# 0x4013-0x401D-, deja la pila en 0xE400 y borra 0xE000-0xE3FF con un ldir.
+# El trazado estatico no puede llegar solo a un gancho de interrupcion.
+0x4043   # manejador de la interrupcion, enganchado en H.KEYI por INIT (0x4018-0x401D)
+
+# ======================================================================
+# LAS NUEVE TABLAS DE DESPACHO
+# ======================================================================
+#
+# 0x4071 es un despachador con la tabla escrita DETRAS del propio `call`:
+#
+#     pop hl        HL = la direccion de retorno, o sea la tabla
+#     add a,a       A por dos, que son punteros de 16 bits
+#     call 0x4067   HL += A
+#     ld e,(hl) / inc hl / ld d,(hl) / ex de,hl / jp (hl)
+#
+# El trazado estatico no puede seguir un `jp (hl)`, asi que sin estas nueve
+# declaraciones el cartucho se queda en el 7,5 % trazado. La directiva
+# !tabla marca los bytes como datos Y mete cada puntero como punto de
+# entrada.
+#
+# El numero de entradas de cada una sale de leer palabras mientras caigan
+# dentro de la ROM (0x4000-0x7FFF) y de que la siguiente ya no lo hace.
+
+!tabla 0x409F  9   # el reparto de escenas, desde 0x409c
+!tabla 0x460D  7   # los siete dibujos de pantalla, desde 0x460a
+!tabla 0x4D6E 32   # la maquina de estados grande, desde 0x4d6b; el 0x4DAE
+                   # se repite catorce veces y es el estado que no hace nada
+!tabla 0x6B4B  5   # desde 0x6b48, y son CINCO, no seis. La regla de "leer
+                   # palabras mientras caigan dentro de la ROM" da una sexta,
+                   # 0x583A, y esa es falsa: cae dentro del guion que 0x43f6
+                   # dibuja -0x57f5 a 0x5909-, y seguirla como codigo llenaba
+                   # el listado de `rst 18h` y `sbc a,a`. Cinco es lo que dice
+                   # el indice: 0x6b42 lee 0xE054, el escenario, y de ese hay
+                   # CINCO -las tablas de fondo de 0x4b9c y 0x4ba6 tienen cinco
+                   # punteros cada una-. Y la prueba de que la tabla acaba en
+                   # 0x6b55 es que 0x4182 hace `call 0x6b55` y 0x42e6 `jp
+                   # 0x6b55`: ahi empieza codigo al que se llama por su nombre
+!tabla 0x6CC1  6   # desde 0x6cbe; son SEIS y no siete: la septima palabra
+                   # que cae dentro de la ROM ya son los dos primeros bytes
+                   # del codigo de 0x6ccd, que es el primer destino
+!tabla 0x6EA6  6   # desde 0x6ea3
+!tabla 0x7043  6   # desde 0x7040
+!tabla 0x7401  6   # desde 0x73fe; lo mismo, la tabla acaba en 0x740d, que
+                   # es su primer destino
+!tabla 0x7787  6   # desde 0x7784
+
+# ======================================================================
+# LAS SEIS TABLAS DEL DESPACHO POR ESCENARIO
+# ======================================================================
+#
+# Estas no las despacha 0x4071 con la tabla detras del `call`, sino 0x7375:
+# `ld hl,07381h / call 0x4ce8 / ex de,hl / pop bc / ld a,b / jp 0x4072`. O sea
+# que 0x7381 es una tabla de TABLAS -una por escenario, indexada por 0xE054- y
+# la que salga se despacha por B.
+#
+# Sin declararlas, el trazado dejaba sin ver 315 bytes de codigo repartidos en
+# seis sitios, y el presupuesto los daba por datos sin identificar. Se nota en
+# que las seis tienen la MISMA forma: primer puntero 0x73a2 y quinto 0x74a2 en
+# las cinco de siete, y los otros propios de cada escenario.
+#
+# El numero de entradas de cada una es el de siempre, y ademas cierra sin un
+# byte de sobra: la ultima palabra de cada tabla es la que va justo antes de su
+# primer destino propio.
+
+!tabla 0x7381  5   # la tabla de tablas, indexada por 0xE054 desde 0x7375
+!tabla 0x6CA0  7   # escenario 0
+!tabla 0x6E8F  7   # escenario 1
+!tabla 0x702C  7   # escenario 2
+!tabla 0x738B  7   # escenario 3, pegada a la tabla de tablas
+!tabla 0x7770  7   # escenario 4
