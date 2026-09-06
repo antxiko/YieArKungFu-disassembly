@@ -22,7 +22,7 @@ La imagen del cartucho (`.rom`) **no** se distribuye aqui. Quien quiera volver a
 montar el listado tiene que poner la suya, y el `Makefile` comprueba su sha256
 antes de hacer nada.
 
-Las imagenes que produce `tools/graficos.py` no son ilustraciones traidas de
+Las imagenes que produce `tools/pantallas.py` no son ilustraciones traidas de
 fuera: se dibujan leyendo los propios bloques del cartucho, en las direcciones
 que dice el listado. Son parte de la prueba de que la lectura del binario es
 correcta: si estuviera mal, saldria ruido.
