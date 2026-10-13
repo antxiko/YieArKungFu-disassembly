@@ -35,23 +35,27 @@ PAGINA = motor_musica.pagina_basica(
     [("la música del combate (0x88), tal como el juego la pide, sus primeros "
       "361 y 957 cuadros",
       "the fight tune (0x88), as the game asks for it, its first 361 and 957 "
-      "frames")],
+      "frames"),
+     ("el final de la partida (0x8F) entero, 175 cuadros, y la caída (0x8A) "
+      "entera, 177, pedidas a la fuerza",
+      "the end of the game (0x8F), whole, 175 frames, and the fall (0x8A), "
+      "whole, 177, both forced")],
     [("Cómo se pide una pieza",
       "`pon_la_melodia` recibe el número en A, sin mirar prioridad. Los "
       "números bajos son efectos y del 0x88 en adelante hay música. Cada "
       "canal ocupa doce bytes desde 0xE018 y 0xE03C guarda la copia del "
       "mezclador del PSG, que el arranque deja en 0xB8. Las pistas «de la "
       "tabla» están en la tabla de pistas pero ninguna rutina las pide con "
-      "un `ld a`. Solo hay una pieza cotejada con openMSX, la 0x88; las "
-      "demás salen del mismo motor, pero no se ha comparado cada una.",
+      "un `ld a`. Hay tres piezas cotejadas con openMSX, la 0x88, la 0x8F y la 0x8A; "
+      "las demás salen del mismo motor, pero no se ha comparado cada una.",
       "How a piece is asked for",
       "`pon_la_melodia` takes the number in A, without looking at priority. "
       "Low numbers are effects and from 0x88 up there is music. Each channel "
       "takes twelve bytes from 0xE018 and 0xE03C holds the copy of the PSG "
       "mixer, which start-up leaves at 0xB8. The tracks marked «in the "
       "table» are in the track table but no routine asks for them with an "
-      "`ld a`. Only one piece has been checked against openMSX, 0x88; the "
-      "rest come out of the same engine but each has not been compared.")])
+      "`ld a`. Three pieces have been checked against openMSX, 0x88, 0x8F and 0x8A; "
+      "the rest come out of the same engine but each has not been compared.")])
 
 CFG = dict(rom="yiear.rom", org=0x4000, frame=0x7C5C, pide=0x7BCC,
            ram=(0xE018, 0xE03D), ram0=[(0xE03C, 0xB8)],

@@ -6,13 +6,14 @@ Everything you hear here comes from running the cartridge's own sound engine (`u
 
 The PSG writes have been compared frame by frame with those of openMSX (C-BIOS MSX1 japonés). In every frame the PSG ends up the same:
 
-- the fight tune (0x88), as the game asks for it, its first 361 and 957 frames.
+- the fight tune (0x88), as the game asks for it, its first 361 and 957 frames;
+- the end of the game (0x8F), whole, 175 frames, and the fall (0x8A), whole, 177, both forced.
 
 The timbre is not checked: it is a textbook AY-3-8910, not a recording of the emulator. The probes are `tools/omsx_psg.tcl` and `tools/coteja_psg.py`.
 
 ## How a piece is asked for
 
-`pon_la_melodia` takes the number in A, without looking at priority. Low numbers are effects and from 0x88 up there is music. Each channel takes twelve bytes from 0xE018 and 0xE03C holds the copy of the PSG mixer, which start-up leaves at 0xB8. The tracks marked «in the table» are in the track table but no routine asks for them with an `ld a`. Only one piece has been checked against openMSX, 0x88; the rest come out of the same engine but each has not been compared.
+`pon_la_melodia` takes the number in A, without looking at priority. Low numbers are effects and from 0x88 up there is music. Each channel takes twelve bytes from 0xE018 and 0xE03C holds the copy of the PSG mixer, which start-up leaves at 0xB8. The tracks marked «in the table» are in the track table but no routine asks for them with an `ld a`. Three pieces have been checked against openMSX, 0x88, 0x8F and 0x8A; the rest come out of the same engine but each has not been compared.
 
 ## The tunes
 

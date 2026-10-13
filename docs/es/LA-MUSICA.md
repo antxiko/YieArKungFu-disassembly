@@ -6,13 +6,14 @@ Todo lo que suena aquí sale de ejecutar el motor de sonido del cartucho (`un_cu
 
 Las escrituras al PSG se han comparado cuadro a cuadro con las de openMSX (C-BIOS MSX1 japonés). En todos los cuadros el PSG queda igual:
 
-- la música del combate (0x88), tal como el juego la pide, sus primeros 361 y 957 cuadros.
+- la música del combate (0x88), tal como el juego la pide, sus primeros 361 y 957 cuadros;
+- el final de la partida (0x8F) entero, 175 cuadros, y la caída (0x8A) entera, 177, pedidas a la fuerza.
 
 El timbre no está cotejado: es el de un AY-3-8910 de manual, no una grabación del emulador. Las sondas están en `tools/omsx_psg.tcl` y `tools/coteja_psg.py`.
 
 ## Cómo se pide una pieza
 
-`pon_la_melodia` recibe el número en A, sin mirar prioridad. Los números bajos son efectos y del 0x88 en adelante hay música. Cada canal ocupa doce bytes desde 0xE018 y 0xE03C guarda la copia del mezclador del PSG, que el arranque deja en 0xB8. Las pistas «de la tabla» están en la tabla de pistas pero ninguna rutina las pide con un `ld a`. Solo hay una pieza cotejada con openMSX, la 0x88; las demás salen del mismo motor, pero no se ha comparado cada una.
+`pon_la_melodia` recibe el número en A, sin mirar prioridad. Los números bajos son efectos y del 0x88 en adelante hay música. Cada canal ocupa doce bytes desde 0xE018 y 0xE03C guarda la copia del mezclador del PSG, que el arranque deja en 0xB8. Las pistas «de la tabla» están en la tabla de pistas pero ninguna rutina las pide con un `ld a`. Hay tres piezas cotejadas con openMSX, la 0x88, la 0x8F y la 0x8A; las demás salen del mismo motor, pero no se ha comparado cada una.
 
 ## Las músicas
 
